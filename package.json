@@ -1,0 +1,20 @@
+{
+  "name": "slack-ikku",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hakatashi/slack-ikku.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hakatashi/slack-ikku/issues"
+  },
+  "homepage": "https://github.com/hakatashi/slack-ikku#readme"
+}
