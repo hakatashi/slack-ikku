@@ -26,6 +26,8 @@ return unless message.text?
 
 return unless config.channels.length is 0 or message.channel in config.channels
 
+message.text .= replace /^<.+?>:?/ ''
+
 tokens = tokenizer.tokenize message.text
 
 target-regions = [5 7 5]
