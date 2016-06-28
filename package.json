@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/hakatashi/slack-ikku/issues"
   },
-  "homepage": "https://github.com/hakatashi/slack-ikku#readme"
+  "homepage": "https://github.com/hakatashi/slack-ikku#readme",
+  "dependencies": {
+    "@slack/client": "^3.5.0",
+    "kuromojin": "^1.3.1",
+    "livescript": "^1.5.0"
+  }
 }
