@@ -1,9 +1,10 @@
 {
   "name": "slack-ikku",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Slackと一句で韻を踏んでいる",
+  "private": true,
   "scripts": {
+    "start": "lsc index.ls",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,7 +12,7 @@
     "url": "git+https://github.com/hakatashi/slack-ikku.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Koki Takahashi <hakatasiloving@gmail.com> (https://hakatashi.com/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hakatashi/slack-ikku/issues"
