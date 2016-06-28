@@ -23,6 +23,8 @@ web-client = new Web-client config.slack-token
 message <- rtm-client.on MESSAGE
 return unless message.text?
 
+return unless config.channels.length is 0 or message.channel in config.channels
+
 tokens = tokenizer.tokenize message.text
 
 target-regions = [5 7 5]
@@ -42,6 +44,8 @@ for token in tokens
     regions[* - 1] += region-length
   else
     regions.push region-length
+
+return if regions.length isnt target-regions.length
 
 jitarazu = regions |> zip-with (-), target-regions |> map max 0 |> fold1 (+)
 jiamari = target-regions |> zip-with (-), regions |> map max 0 |> fold1 (+)
