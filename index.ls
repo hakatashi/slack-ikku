@@ -5,10 +5,9 @@ require! {
   '@slack/client': {
     Rtm-client
     Web-client
-    RTM_EVENTS: {
-      MESSAGE
-      REACTION_ADDED
-      REACTION_REMOVED
+    RTM_EVENTS: {MESSAGE}
+    CLIENT_EVENTS: {
+      RTM: {DISCONNECT}
     }
   }
 }
@@ -19,6 +18,8 @@ rtm-client = new Rtm-client config.slack-token
 rtm-client.start!
 
 web-client = new Web-client config.slack-token
+
+rtm-client.on DISCONNECT, -> process.exit 1
 
 message <- rtm-client.on MESSAGE
 return unless message.text?
