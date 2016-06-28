@@ -34,9 +34,9 @@ for token in tokens
   continue if token.pos is \記号
 
   pronunciation = token.pronunciation or token.surface_form
-  return unless pronunciation.match /^[ぁ-ゔァ-ヺー]+$/
+  return unless pronunciation.match /^[ぁ-ゔァ-ヺー…]+$/
 
-  region-length = pronunciation.replace /[ぁぃぅぇぉゃゅょァィゥェォャュョ]/g, '' .length
+  region-length = pronunciation.replace /[ぁぃぅぇぉゃゅょァィゥェォャュョ…]/g, '' .length
 
   if token.pos in <[助詞 助動詞]> or token.pos_detail_1 is \接尾
     regions[* - 1] += region-length
