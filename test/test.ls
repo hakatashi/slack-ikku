@@ -50,7 +50,7 @@ describe 'slack-ikku' ->
 
   @timeout 10000
 
-  It 'adds a reaction when it received 575-style message' (done) ->
+  It 'adds a specified reaction when it received 575-style message' (done) ->
     # First, execute the app
     require '../index.ls'
 
@@ -100,7 +100,7 @@ describe 'slack-ikku' ->
     mock-server = new Server rtm-start-response.url
     server, web-socket <- mock-server.on \connection
 
-    # Send message that matches 575
+    # Send message that doesn't matches 575
     mock-server.send JSON.stringify do
       type: \message
       ts: fake-ts
