@@ -14,8 +14,6 @@ fake-channel = 'DFAKECHAN'
 fake-ts = '1111111111.000000'
 
 describe 'slack-ikku' ->
-  scope = null
-
   before ->
     # Mock of config file
     mockery.register-mock './config.json.ls' do
