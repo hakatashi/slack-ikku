@@ -1,5 +1,6 @@
 require! {
   nock
+  path
   mockery
   chai: {expect}
   'mock-socket': {Server, Web-socket}
@@ -39,7 +40,7 @@ describe 'slack-ikku' ->
 
   after-each ->
     # Purge cache of the app
-    delete require.cache['../index.ls']
+    delete require.cache[path.resolve __dirname, '../index.ls']
 
     # Purge nock
     nock.clean-all!
@@ -81,4 +82,41 @@ describe 'slack-ikku' ->
     request <- reactions-add.on \replied
 
     # OK!
+    mock-server.stop!
+    done!
+
+  It 'anyway, works' (done) ->
+    # First, execute the app
+    require '../index.ls'
+
+    # Mock rtm.start API request
+    rtm-start = nock 'https://slack.com'
+      .post '/api/rtm.start' token: fake-token
+      .reply 200 rtm-start-response
+    <- rtm-start.on \replied
+
+    # Execute server and wait for connection
+    mock-server = new Server rtm-start-response.url
+    server, web-socket <- mock-server.on \connection
+
+    # Send message that matches 575
+    mock-server.send JSON.stringify do
+      type: \message
+      ts: fake-ts
+      channel: fake-channel
+      user: fake-user
+      text: '古池や蛙飛び込む水の音'
+
+    # Mock reactions.add API request
+    reactions-add = nock 'https://slack.com'
+      .post '/api/reactions.add' do
+        token: fake-token
+        channel: fake-channel
+        timestamp: fake-ts
+        name: 'test_ikku'
+      .reply 200 {+ok}
+    request <- reactions-add.on \replied
+
+    # OK!
+    mock-server.stop!
     done!
