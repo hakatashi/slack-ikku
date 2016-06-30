@@ -1,4 +1,5 @@
 require! {
+  util
   './config.json.ls'
   'prelude-ls': {fold1, zip-with, max, map}
   kuromojin: {get-tokenizer}
@@ -60,3 +61,5 @@ web-client.reactions.add config.ikku-emoji, {
   message.channel
   timestamp: message.ts
 }
+
+console.log "[#{Date!}] Found ikku: #{util.inspect message}"
