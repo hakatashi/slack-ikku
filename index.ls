@@ -42,7 +42,7 @@ for token in tokens
 
   region-length = pronunciation.replace /[ぁぃぅぇぉゃゅょァィゥェォャュョ…]/g, '' .length
 
-  if token.pos in <[助詞 助動詞]> or token.pos_detail_1 is \接尾
+  if token.pos in <[助詞 助動詞]> or token.pos_detail_1 in <[接尾 非自立]>
     regions[* - 1] += region-length
   else if regions[* - 1] < target-regions[regions.length - 1] or regions.length is 3
     regions[* - 1] += region-length
