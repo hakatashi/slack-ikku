@@ -45,11 +45,12 @@ describe 'slack-ikku' ->
     # Purge nock
     nock.clean-all!
 
+    # Disable require mocks
     mockery.disable!
 
   @timeout 10000
 
-  It 'works' (done) ->
+  It 'adds a reaction when it received 575-style message' (done) ->
     # First, execute the app
     require '../index.ls'
 
@@ -85,7 +86,7 @@ describe 'slack-ikku' ->
     mock-server.stop!
     done!
 
-  It 'anyway, works' (done) ->
+  It 'doesn\'t add reaction when the message doesn\'t match 575' (done) ->
     # First, execute the app
     require '../index.ls'
 
@@ -105,17 +106,15 @@ describe 'slack-ikku' ->
       ts: fake-ts
       channel: fake-channel
       user: fake-user
-      text: '古池や蛙飛び込む水の音'
+      text: '咳をしても一人'
 
     # Mock reactions.add API request
     reactions-add = nock 'https://slack.com'
-      .post '/api/reactions.add' do
-        token: fake-token
-        channel: fake-channel
-        timestamp: fake-ts
-        name: 'test_ikku'
+      .post '/api/reactions.add'
       .reply 200 {+ok}
-    request <- reactions-add.on \replied
+    reactions-add.on \replied -> done new Error 'should not add reaction'
+
+    <- set-timeout _, 2000
 
     # OK!
     mock-server.stop!
