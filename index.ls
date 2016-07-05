@@ -3,6 +3,7 @@ require! {
   './config.json.ls'
   'prelude-ls': {fold1, zip-with, max, map}
   kuromojin: {get-tokenizer}
+  unorm: {nfkc}
   '@slack/client': {
     Rtm-client
     Web-client
@@ -29,7 +30,7 @@ return unless config.channels.length is 0 or message.channel in config.channels
 
 message.text .= replace /^<.+?>:?/ ''
 
-tokens = tokenizer.tokenize message.text
+tokens = tokenizer.tokenize nfkc message.text
 
 target-regions = [5 7 5]
 regions = [0]
