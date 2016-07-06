@@ -22,13 +22,14 @@ web-client = new Web-client config.slack-token
 rtm-client.on DISCONNECT, -> process.exit 1
 
 message <- rtm-client.on MESSAGE
-return unless message.text?
+text = message.file?.initial_comment?.comment or message.text
+return unless text?
 
 return unless config.channels.length is 0 or message.channel in config.channels
 
-message.text .= replace /^<.+?>:?/ ''
+text .= replace /^<.+?>:?/ ''
 
-tokens = tokenizer.tokenize message.text
+tokens = tokenizer.tokenize text
 
 target-regions = [5 7 5]
 regions = [0]
@@ -56,7 +57,13 @@ jiamari = target-regions |> zip-with (-), regions |> map max 0 |> fold1 (+)
 
 return if jitarazu > config.max-jitarazu or jiamari > config.max-jiamari
 
-web-client.reactions.add config.ikku-emoji, {
-  message.channel
-  timestamp: message.ts
-}
+if message.file?
+  web-client.reactions.add config.ikku-emoji, {
+    file: message.file.id
+    file_comment: message.file.initial_comment.id
+  }
+else
+  web-client.reactions.add config.ikku-emoji, {
+    message.channel
+    timestamp: message.ts
+  }
