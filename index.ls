@@ -1,7 +1,9 @@
 require! {
+  util
   './config.json.ls'
   'prelude-ls': {fold1, zip-with, max, map}
   kuromojin: {get-tokenizer}
+  unorm: {nfkc}
   '@slack/client': {
     Rtm-client
     Web-client
@@ -29,7 +31,7 @@ return unless config.channels.length is 0 or message.channel in config.channels
 
 text .= replace /^<.+?>:?/ ''
 
-tokens = tokenizer.tokenize text
+tokens = tokenizer.tokenize nfkc text
 
 target-regions = [5 7 5]
 regions = [0]
@@ -67,3 +69,5 @@ else
     message.channel
     timestamp: message.ts
   }
+
+console.log "[#{Date!}] Found ikku: #{util.inspect message}"
