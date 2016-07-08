@@ -38,7 +38,7 @@ regions = [0]
 
 for token in tokens
   continue if token.pos is \記号
-  continue if token.basic_form is '、'
+  continue if token.surface_form in <[、 ! ?]>
 
   pronunciation = token.pronunciation or token.surface_form
   return unless pronunciation.match /^[ぁ-ゔァ-ヺー…]+$/
