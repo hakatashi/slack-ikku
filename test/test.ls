@@ -119,3 +119,88 @@ describe 'slack-ikku' ->
     # OK!
     mock-server.stop!
     done!
+
+  context 'when jiamari-emoji and jitarazu-emoji are specified' ->
+    before ->
+      # Mock of config file
+      mockery.deregister-mock './config.json.ls'
+      mockery.register-mock './config.json.ls' do
+        slack-token: fake-token
+        ikku-emoji: 'test_ikku'
+        jiamari-emoji: 'test_jiamari'
+        jitarazu-emoji: 'test_jitarazu'
+        channels: <[]>
+        max-jiamari: 2
+        max-jitarazu: 1
+
+    It 'adds a specified jiamari reaction when it received 595-style message' (done) ->
+      # First, execute the app
+      require '../index.ls'
+
+      # Mock rtm.start API request
+      rtm-start = nock 'https://slack.com'
+        .post '/api/rtm.start' token: fake-token
+        .reply 200 rtm-start-response
+      <- rtm-start.on \replied
+
+      # Execute server and wait for connection
+      mock-server = new Server rtm-start-response.url
+      server, web-socket <- mock-server.on \connection
+
+      # Send message that matches 575
+      mock-server.send JSON.stringify do
+        type: \message
+        ts: fake-ts
+        channel: fake-channel
+        user: fake-user
+        text: '枯枝に烏のとまりけり秋の暮' # 5 9 5
+
+      # Mock reactions.add API request
+      reactions-add = nock 'https://slack.com'
+        .post '/api/reactions.add' do
+          token: fake-token
+          channel: fake-channel
+          timestamp: fake-ts
+          name: 'test_jiamari'
+        .reply 200 {+ok}
+      request <- reactions-add.on \replied
+
+      # OK!
+      mock-server.stop!
+      done!
+
+    It 'adds a specified jitarazu reaction when it received 574-style message' (done) ->
+      # First, execute the app
+      require '../index.ls'
+
+      # Mock rtm.start API request
+      rtm-start = nock 'https://slack.com'
+        .post '/api/rtm.start' token: fake-token
+        .reply 200 rtm-start-response
+      <- rtm-start.on \replied
+
+      # Execute server and wait for connection
+      mock-server = new Server rtm-start-response.url
+      server, web-socket <- mock-server.on \connection
+
+      # Send message that matches 575
+      mock-server.send JSON.stringify do
+        type: \message
+        ts: fake-ts
+        channel: fake-channel
+        user: fake-user
+        text: '古池や蛙飛び込む水音' # 5 7 4
+
+      # Mock reactions.add API request
+      reactions-add = nock 'https://slack.com'
+        .post '/api/reactions.add' do
+          token: fake-token
+          channel: fake-channel
+          timestamp: fake-ts
+          name: 'test_jitarazu'
+        .reply 200 {+ok}
+      request <- reactions-add.on \replied
+
+      # OK!
+      mock-server.stop!
+      done!
