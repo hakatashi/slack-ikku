@@ -23,18 +23,6 @@ web-client = new Web-client config.slack-token
 
 rtm-client.on DISCONNECT, -> process.exit 1
 
-add_reaction = (emoji, message) ->
-  if message.file?
-    web-client.reactions.add emoji, {
-      file: message.file.id
-      file_comment: message.file.initial_comment.id
-    }
-  else
-    web-client.reactions.add emoji, {
-      message.channel
-      timestamp: message.ts
-    }
-
 message <- rtm-client.on MESSAGE
 text = message.file?.initial_comment?.comment or message.text
 return unless text?
@@ -71,12 +59,24 @@ jiamari = target-regions |> zip-with (-), regions |> map max 0 |> fold1 (+)
 
 return if jitarazu > config.max-jitarazu or jiamari > config.max-jiamari
 
-add_reaction config.ikku-emoji, message
+add-reaction = (emoji) ->
+  | message.file? =>
+    web-client.reactions.add emoji, {
+      file: message.file.id
+      file_comment: message.file.initial_comment.id
+    }
+  | otherwise =>
+    web-client.reactions.add emoji, {
+      message.channel
+      timestamp: message.ts
+    }
 
-if jiamari > 0 and config.jiamari-emoji? and config.jiamari-emoji.length > 0
-  add_reaction config.jiamari-emoji, message
+add-reaction config.ikku-emoji
 
-if jitarazu > 0 and config.jitarazu-emoji? and config.jitarazu-emoji.length > 0
-  add_reaction config.jitarazu-emoji, message
+if jiamari > 0 and config.jiamari-emoji?length > 0
+  add-reaction config.jiamari-emoji
+
+if jitarazu > 0 and config.jitarazu-emoji?length > 0
+  add-reaction config.jitarazu-emoji
 
 console.log "[#{Date!}] Found ikku: #{util.inspect message}"
