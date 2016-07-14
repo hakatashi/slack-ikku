@@ -12,6 +12,8 @@ slack-ikku [![Build Status][travis-image]][travis-url] [![Dependency Status][dav
 
 slack-ikkuだよ。一句を見つけて自動でReactionをつけるすごいやつだよ。
 
+[ブログ記事](http://inside.pixiv.net/entry/2016/07/05/194025)
+
 ## インストール
 
 ```sh
