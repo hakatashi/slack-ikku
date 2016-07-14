@@ -37,8 +37,10 @@ target-regions = [5 7 5]
 regions = [0]
 
 for token in tokens
-  continue if token.pos is \記号
-  continue if token.surface_form in <[、 ! ?]>
+  if token.pos is \記号 or token.surface_form in <[、 ! ?]>
+    if regions[* - 1] isnt 0
+      regions.push 0
+    continue
 
   pronunciation = token.pronunciation or token.surface_form
   return unless pronunciation.match /^[ぁ-ゔァ-ヺー…]+$/
@@ -51,6 +53,9 @@ for token in tokens
     regions[* - 1] += region-length
   else
     regions.push region-length
+
+if regions[* - 1] is 0
+  regions.pop!
 
 return if regions.length isnt target-regions.length
 
