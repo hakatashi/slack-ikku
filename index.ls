@@ -38,7 +38,7 @@ regions = [0]
 
 for token in tokens
   if token.pos is \記号 or token.surface_form in <[、 ! ?]>
-    if regions[* - 1] isnt 0
+    if regions.length < target-regions.length and regions[* - 1] >= target-regions[regions.length - 1]
       regions.push 0
     continue
 
