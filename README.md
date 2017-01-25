@@ -1,6 +1,8 @@
 slack-ikku [![Build Status][travis-image]][travis-url] [![Dependency Status][david-image]][david-url] [![devDependency Status][david-dev-image]][david-dev-url]
 ==========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/hakatashi/slack-ikku.svg)](https://greenkeeper.io/)
+
 [travis-image]: https://travis-ci.org/hakatashi/slack-ikku.svg?branch=master
 [travis-url]: https://travis-ci.org/hakatashi/slack-ikku
 [david-image]: https://david-dm.org/hakatashi/slack-ikku.svg
