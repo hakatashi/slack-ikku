@@ -28,7 +28,7 @@
   "devDependencies": {
     "chai": "^4.0.0",
     "mocha": "^3.0.0",
-    "mock-socket": "^6.0.1",
+    "mock-socket": "^7.0.0",
     "mockery": "^2.0.0",
     "nock": "^9.0.0"
   }
