@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/hakatashi/slack-ikku#readme",
   "dependencies": {
-    "@slack/client": "^3.5.0",
+    "@slack/client": "^4.1.0",
     "kuromojin": "^1.3.1",
     "livescript": "^1.5.0",
     "prelude-ls": "^1.1.2",
